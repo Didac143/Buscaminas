@@ -8,6 +8,7 @@ import buscamines.impl.BuscaminesPresenterImpl;
 import buscamines.impl.BuscaminesViewImpl;
 import java.io.IOException;
 import javafx.application.Application;
+import javafx.event.EventType;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
@@ -47,24 +48,30 @@ public class BuscaminesApp extends Application {
 
         file.getItems().addAll(FExit);
         
-        CheckMenuItem SDiez = new CheckMenuItem("10x10");
-        CheckMenuItem SQuince = new CheckMenuItem("15x15");
-        CheckMenuItem SVeinte = new CheckMenuItem("20x20");
+         ToggleGroup GSize = new ToggleGroup();
+         
         
+         RadioMenuItem SDiez = RadioMenuItemBuilder.create().toggleGroup(GSize).selected(true).text("10x10").build();
+         RadioMenuItem SQuince = RadioMenuItemBuilder.create().toggleGroup(GSize).text("15x15").build();
+         RadioMenuItem SVeinte = RadioMenuItemBuilder.create().toggleGroup(GSize).text("20x20").build();
+         
         size.getItems().addAll(SDiez,SQuince,SVeinte);
         
-        ToggleGroup myToggleGroup = new ToggleGroup();
+         ToggleGroup GDifi = new ToggleGroup();
         
+        RadioMenuItem DFacil = RadioMenuItemBuilder.create().toggleGroup(GDifi).selected(true).text("Facil").build();
+        RadioMenuItem DMedio =  RadioMenuItemBuilder.create().toggleGroup(GDifi).text("Medio").build();
+        RadioMenuItem DDificil = RadioMenuItemBuilder.create().toggleGroup(GDifi).text("Dificil").build();
         
-        
-        RadioMenuItem DFacil = RadioMenuItemBuilder.create().toggleGroup(myToggleGroup).text("Facil").build();
-        RadioMenuItem DMedio =  RadioMenuItemBuilder.create().toggleGroup(myToggleGroup).text("Medio").build();
-        RadioMenuItem DDificil = RadioMenuItemBuilder.create().toggleGroup(myToggleGroup).text("Dificil").build();
         
         difficulty.getItems().addAll(DFacil,DMedio,DDificil);
         
-        RadioMenuItem SSonido = RadioMenuItemBuilder.create().toggleGroup(myToggleGroup).text("On").build();
-        RadioMenuItem SOff = RadioMenuItemBuilder.create().toggleGroup(myToggleGroup).text("Off").build();
+        ToggleGroup GSonido = new ToggleGroup();
+        
+        RadioMenuItem SSonido = RadioMenuItemBuilder.create().toggleGroup(GSonido).selected(true).text("On").build();
+        RadioMenuItem SOff = RadioMenuItemBuilder.create().toggleGroup(GSonido).text("Off").build();
+       
+        
         sound.getItems().addAll(SSonido,SOff);
         
         MenuItem HComoJugar = new MenuItem("Como jugar");
