@@ -8,6 +8,8 @@ import buscamines.impl.BuscaminesPresenterImpl;
 import buscamines.impl.BuscaminesViewImpl;
 import java.io.IOException;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -74,25 +76,55 @@ public class BuscaminesApp extends Application {
 
         MenuItem HComoJugar = new MenuItem("Como jugar");
         MenuItem HAutores = new MenuItem("Autores");
+                GridPane gridpane = new GridPane();
 
         help.getItems().addAll(HAutores, HComoJugar);
+        SDiez.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
 
-        GridPane gridpane = new GridPane();
+                for (int i = 0; i < 10; i++) {
+                    for (int j = 0; j < 10; j++) {
+                        gridpane.add(new Button("  "), i, j);
+                    }
 
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                gridpane.add(new Button("  "), i, j);
+                }
             }
+            
+        });
+        SQuince.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
 
-        }
+                for (int i = 0; i < 15; i++) {
+                    for (int j = 0; j < 15; j++) {
+                        gridpane.add(new Button("  "), i, j);
+                    }
 
-        ((VBox) scene.getRoot()).getChildren().addAll(menuBar, gridpane);
+                }
+            }
+            
+        });
+        SVeinte.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                for (int i = 0; i < 20; i++) {
+                    for (int j = 0; j < 20; j++) {
+                        gridpane.add(new Button("  "), i, j);
+                    }
+
+                }
+            }
+            
+        });
+        ((VBox) scene.getRoot()).getChildren().addAll(menuBar,gridpane);
 
         stage.setScene(scene);
         stage.show();
     }
 
-    public static void diez() {
+    public static GridPane diez() {
         GridPane gridpane = new GridPane();
 
         for (int i = 0; i < 10; i++) {
@@ -101,7 +133,7 @@ public class BuscaminesApp extends Application {
             }
 
         }
-
+        return gridpane;
     }
 
     public static void main(String[] args) {
