@@ -61,7 +61,7 @@ public class Game extends Grid {
             System.out.print(y);
             for (int x = 0; x < getGRID_LAYOUT()[y].length; x++) {
                 Cell cell = getGRID_LAYOUT()[y][x];
-                System.out.print(cell.isShowing() ? "[" + cell.getMinesNearby() + "]" : "[ ]");
+                System.out.print(cell.isShowing() ? cell : "[ ]");
             }
             System.out.println();
         }

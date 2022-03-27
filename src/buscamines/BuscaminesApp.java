@@ -76,7 +76,7 @@ public class BuscaminesApp extends Application {
 
         MenuItem HComoJugar = new MenuItem("Como jugar");
         MenuItem HAutores = new MenuItem("Autores");
-                GridPane gridpane = new GridPane();
+        GridPane gridpane = new GridPane();
 
         help.getItems().addAll(HAutores, HComoJugar);
         SDiez.setOnAction(new EventHandler<ActionEvent>() {
