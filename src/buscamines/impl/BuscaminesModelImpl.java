@@ -1,4 +1,5 @@
 package buscamines.impl;
+
 import buscamines.Box;
 import buscamines.BuscaminesContract;
 import buscamines.BuscaminesContract.BuscaminesModelListener;
@@ -9,14 +10,18 @@ import java.util.Set;
 
 public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
 
+    public enum Dificult {
+        EASY, MEDIUM, HARD;
+    }
+
     private Set<BuscaminesModelListener> listeners;
-    private Box[][] grid;    public enum Dificult {
-        EASY, MEDIUM, HARD;    }
+    private Box[][] grid;
     private List<Integer> posMines;
     private Map<Dificult, Integer> dificultPercents;
     private int size;
     private Dificult dificult;
     private int pos; //position to discover
+    private BuscaminesPresenter presentador;
 
     @Override
     public void start(int size, Dificult d) {
@@ -30,7 +35,7 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
 
     @Override
     public void setPresenter(BuscaminesPresenter p) {
-        throw new RuntimeException("no implementat!");
+        this.presentador = p;
     }
 
     @Override
@@ -65,15 +70,15 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
 
     @Override
     public Set<Integer> getSizes() {
-         throw new RuntimeException("no implementat!");
-    }
-    
-    private int getFile(){
-        return pos/size;
-    }
-    private int getCol(){
-        return pos%size;
+        throw new RuntimeException("no implementat!");
     }
 
+    private int getFile() {
+        return pos / size;
+    }
+
+    private int getCol() {
+        return pos % size;
+    }
 
 }

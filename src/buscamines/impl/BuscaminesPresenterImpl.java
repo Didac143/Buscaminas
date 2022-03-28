@@ -1,25 +1,31 @@
 package buscamines.impl;
 
 import buscamines.BuscaminesContract;
+import buscamines.BuscaminesContract.BuscaminesModel;
 import buscamines.BuscaminesContract.BuscaminesPresenter;
+import buscamines.BuscaminesContract.BuscaminesView;
 import buscamines.impl.BuscaminesModelImpl.Dificult;
 import java.util.Set;
 
 public class BuscaminesPresenterImpl implements BuscaminesPresenter {
+    private BuscaminesModel model;
+    private BuscaminesView vista;
+
 
     @Override
     public void setModel(BuscaminesContract.BuscaminesModel m) {
-        throw new RuntimeException("no implementat!");
+        this.model = m;
     }
 
     @Override
     public void setView(BuscaminesContract.BuscaminesView v) {
-        throw new RuntimeException("no implementat!");
+        this.vista = v;
     }
 
     @Override
     public void toUncover(int pos) {
-        throw new RuntimeException("no implementat!");
+        model.play(pos);
+        
     }
 
 
@@ -30,7 +36,7 @@ public class BuscaminesPresenterImpl implements BuscaminesPresenter {
 
     @Override
     public void toRestart(int size, Dificult d) {
-         throw new RuntimeException("no implementat!");
+         model.start(size, d);
     }
 
 }

@@ -4,12 +4,14 @@ public class Game extends Grid {
     private Difficulty difficulty;
     private boolean sound;
     private int totalMines;
+    private boolean inProgress;
 
     public Game(Difficulty difficulty, boolean sound, int GRID_SIZE) {
         super(GRID_SIZE);
         this.difficulty = difficulty;
         this.sound = sound;
         this.totalMines = 0;
+        this.inProgress = false;
         fillGridLayout();
         setMines();
         calcNearbyMines();
