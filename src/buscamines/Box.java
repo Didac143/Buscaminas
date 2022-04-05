@@ -19,6 +19,10 @@ public class Box {
         this.isMine = isMine;
     }
 
+    public int getPos() {
+        return pos;
+    }
+    
     public boolean getIsUnCovered() {
         return isUnCovered;
     }
@@ -31,7 +35,7 @@ public class Box {
         return isMine;
     }
 
-    public void setIsMine(boolean isMine) {
+    public void setMine(boolean isMine) {
         this.isMine = isMine;
     }
 

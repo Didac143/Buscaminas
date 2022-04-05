@@ -5,9 +5,10 @@ import buscamines.BuscaminesContract.BuscaminesModel;
 import buscamines.BuscaminesContract.BuscaminesPresenter;
 import buscamines.BuscaminesContract.BuscaminesView;
 import buscamines.impl.BuscaminesModelImpl.Dificult;
+import java.util.List;
 import java.util.Set;
 
-public class BuscaminesPresenterImpl implements BuscaminesPresenter {
+public class BuscaminesPresenterImpl implements BuscaminesPresenter, BuscaminesContract.BuscaminesModelListener {
     private BuscaminesModel model;
     private BuscaminesView vista;
 
@@ -15,6 +16,7 @@ public class BuscaminesPresenterImpl implements BuscaminesPresenter {
     @Override
     public void setModel(BuscaminesContract.BuscaminesModel m) {
         this.model = m;
+        model.addListener(this);
     }
 
     @Override
@@ -36,6 +38,16 @@ public class BuscaminesPresenterImpl implements BuscaminesPresenter {
     @Override
     public void toRestart(int size, Dificult d) {
          model.start(size, d);
+    }
+
+    @Override
+    public void overEvent(List<Integer> posMines) {
+        vista.overGame(posMines);
+    }
+
+    @Override
+    public void winEvent() {
+        vista.win();
     }
 
 }

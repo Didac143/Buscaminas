@@ -61,7 +61,7 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         stage.setTitle("Buscaminas");
         Scene scene = new Scene(new VBox(), 400, 400);
         scene.setFill(Color.OLDLACE);
-        
+
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         stage.setMaxHeight((screen.getHeight() * 98) / 100);
         stage.setMaxWidth((screen.getWidth() * 50) / 100);
@@ -216,6 +216,12 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         private void initButton() {
             this.setMaxWidth(Double.POSITIVE_INFINITY);
             this.setMaxHeight(Double.POSITIVE_INFINITY);
+            this.addEventHandler(EventType.ROOT, new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    presentador.toUncover(pos);
+                }
+            });
         }
 
     }
