@@ -40,8 +40,6 @@ public class BuscaminesApp extends Application {
         p.setModel(m);
         p.setView(v);
         v.setPresenter(p);
-        m.setPresenter(p);
-        
     }
 
    

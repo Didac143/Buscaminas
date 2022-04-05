@@ -25,7 +25,6 @@ public class BuscaminesPresenterImpl implements BuscaminesPresenter {
     @Override
     public void toUncover(int pos) {
         model.play(pos);
-        
     }
 
 

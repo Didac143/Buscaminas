@@ -3,7 +3,6 @@ package buscamines.impl;
 import buscamines.Box;
 import buscamines.BuscaminesContract;
 import buscamines.BuscaminesContract.BuscaminesModelListener;
-import buscamines.BuscaminesContract.BuscaminesPresenter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,11 +20,11 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
     private int size;
     private Dificult dificult;
     private int pos; //position to discover
-    private BuscaminesPresenter presentador;
 
     @Override
     public void start(int size, Dificult d) {
-        throw new RuntimeException("no implementat!");
+        this.size = size;
+        this. dificult = d;
     }
 
     @Override
@@ -34,18 +33,13 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
     }
 
     @Override
-    public void setPresenter(BuscaminesPresenter p) {
-        this.presentador = p;
-    }
-
-    @Override
     public boolean addListener(BuscaminesModelListener listener) {
-        throw new RuntimeException("no implementat!");
+        return listeners.add(listener);
     }
 
     @Override
     public boolean removeListener(BuscaminesContract.BuscaminesModelListener listener) {
-        throw new RuntimeException("no implementat!");
+        return listeners.remove(listener);
     }
 
     @Override

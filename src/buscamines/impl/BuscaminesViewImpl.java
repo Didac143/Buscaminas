@@ -3,16 +3,20 @@ package buscamines.impl;
 import buscamines.BuscaminesContract;
 import buscamines.BuscaminesContract.BuscaminesPresenter;
 import buscamines.BuscaminesContract.BuscaminesView;
-import java.awt.Button;
+import buscamines.impl.BuscaminesModelImpl.Dificult;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -32,10 +36,13 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
 
     private List<MyButton> buttons;
     private BuscaminesPresenter presentador;
+    private ToggleGroup sizeGroup, dificultyGroup;
+    private GridPane gridPane;
 
     public BuscaminesViewImpl(Stage stage) {
+        gridPane = new GridPane();
+        buttons = new ArrayList<>();
         initUI(stage);
-        buttons = new ArrayList<MyButton>();
     }
 
     @Override
@@ -64,77 +71,77 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
 
         file.getItems().addAll(FExit);
 
-        ToggleGroup GSize = new ToggleGroup();
+        this.sizeGroup = new ToggleGroup();
+        
+        RadioMenuItem sDiez = RadioMenuItemBuilder.create().toggleGroup(sizeGroup).selected(true).text("10x10").build();
+        RadioMenuItem sQuince = RadioMenuItemBuilder.create().toggleGroup(sizeGroup).text("15x15").build();
+        RadioMenuItem sVeinte = RadioMenuItemBuilder.create().toggleGroup(sizeGroup).text("20x20").build();
 
-        RadioMenuItem SDiez = RadioMenuItemBuilder.create().toggleGroup(GSize).selected(true).text("10x10").build();
-        RadioMenuItem SQuince = RadioMenuItemBuilder.create().toggleGroup(GSize).text("15x15").build();
-        RadioMenuItem SVeinte = RadioMenuItemBuilder.create().toggleGroup(GSize).text("20x20").build();
+        size.getItems().addAll(sDiez, sQuince, sVeinte);
 
-        size.getItems().addAll(SDiez, SQuince, SVeinte);
+        this.dificultyGroup = new ToggleGroup();
 
-        ToggleGroup GDifi = new ToggleGroup();
-
-        RadioMenuItem DFacil = RadioMenuItemBuilder.create().toggleGroup(GDifi).selected(true).text("Facil").build();
-        RadioMenuItem DMedio = RadioMenuItemBuilder.create().toggleGroup(GDifi).text("Medio").build();
-        RadioMenuItem DDificil = RadioMenuItemBuilder.create().toggleGroup(GDifi).text("Dificil").build();
+        RadioMenuItem DFacil = RadioMenuItemBuilder.create().toggleGroup(dificultyGroup).selected(true).text("Facil").build();
+        RadioMenuItem DMedio = RadioMenuItemBuilder.create().toggleGroup(dificultyGroup).text("Medio").build();
+        RadioMenuItem DDificil = RadioMenuItemBuilder.create().toggleGroup(dificultyGroup).text("Dificil").build();
 
         difficulty.getItems().addAll(DFacil, DMedio, DDificil);
+        
+        EventHandler eventHandler = new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                initGame();
+            }
+        };
+        
+        sDiez.addEventHandler(EventType.ROOT, eventHandler);
+        sQuince.addEventHandler(EventType.ROOT, eventHandler);
+        sVeinte.addEventHandler(EventType.ROOT, eventHandler);
+        DFacil.addEventHandler(EventType.ROOT, eventHandler);
+        DMedio.addEventHandler(EventType.ROOT, eventHandler);
+        DDificil.addEventHandler(EventType.ROOT, eventHandler);
 
-        ToggleGroup GSonido = new ToggleGroup();
+        ToggleGroup soundGroup = new ToggleGroup();
 
-        RadioMenuItem SSonido = RadioMenuItemBuilder.create().toggleGroup(GSonido).selected(true).text("On").build();
-        RadioMenuItem SOff = RadioMenuItemBuilder.create().toggleGroup(GSonido).text("Off").build();
+        RadioMenuItem SSonido = RadioMenuItemBuilder.create().toggleGroup(soundGroup).selected(true).text("On").build();
+        RadioMenuItem SOff = RadioMenuItemBuilder.create().toggleGroup(soundGroup).text("Off").build();
 
         sound.getItems().addAll(SSonido, SOff);
 
         MenuItem HComoJugar = new MenuItem("Como jugar");
         MenuItem HAutores = new MenuItem("Autores");
-        GridPane gridpane = new GridPane();
 
         help.getItems().addAll(HAutores, HComoJugar);
-        SDiez.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-                for (int i = 0; i < 10; i++) {
-                    for (int j = 0; j < 10; j++) {
-                        gridpane.add(new javafx.scene.control.Button("  "), i, j);
-                    }
-
-                }
-            }
-
-        });
-        SQuince.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-                for (int i = 0; i < 15; i++) {
-                    for (int j = 0; j < 15; j++) {
-                        gridpane.add(new javafx.scene.control.Button("  "), i, j);
-                    }
-
-                }
-            }
-
-        });
-        SVeinte.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-                for (int i = 0; i < 20; i++) {
-                    for (int j = 0; j < 20; j++) {
-                        gridpane.add(new javafx.scene.control.Button("  "), i, j);
-                    }
-
-                }
-            }
-
-        });
-        ((VBox) scene.getRoot()).getChildren().addAll(menuBar, gridpane);
-
+        
+        initGame();
+        
+        ((VBox) scene.getRoot()).getChildren().addAll(menuBar, gridPane);
         stage.setScene(scene);
         stage.show();
+    }
+    
+    public void initGame() {
+        int size = Integer.valueOf(((RadioMenuItem)sizeGroup.getSelectedToggle()).getText().split("x")[0]);
+        Dificult difficulty = null; 
+        switch (((RadioMenuItem)dificultyGroup.getSelectedToggle()).getText().toLowerCase()) {
+            case "facil":
+                difficulty = Dificult.EASY;
+                break;
+            case "medio":
+                difficulty = Dificult.MEDIUM;
+                break;
+            case "dificil":
+                difficulty = Dificult.HARD;
+                break;
+        }
+
+        List<Node> nodes = gridPane.getChildren();
+        nodes.removeAll(nodes);
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                gridPane.add(new MyButton(i*size+j), j, i);
+            }
+        }
     }
 
     @Override
@@ -169,6 +176,7 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         public MyButton(int pos) {
             flag = false;
             this.pos = pos;
+            this.setText(String.valueOf(pos));
         }
 
         public boolean isFlag() {
