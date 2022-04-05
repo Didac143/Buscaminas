@@ -23,11 +23,25 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
     private int pos; //position to discover
     private BuscaminesPresenter presentador;
 
+    /**
+     * 
+     * @param size
+     * @param d 
+     * 
+     * es demana reinicia el joc amb la configuració rebuda
+     */
+    
     @Override
     public void start(int size, Dificult d) {
-        throw new RuntimeException("no implementat!");
+        presentador.toRestart(size, d);
     }
 
+/**
+ * 
+ * @param pos 
+ * es demana realitzar la jugada de descobrir la casella amb la posició passada per paràmetre.
+ */    
+    
     @Override
     public void play(int pos) {
         throw new RuntimeException("no implementat!");
@@ -38,6 +52,8 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
         this.presentador = p;
     }
 
+    
+  
     @Override
     public boolean addListener(BuscaminesModelListener listener) {
         throw new RuntimeException("no implementat!");
@@ -48,21 +64,50 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
         throw new RuntimeException("no implementat!");
     }
 
+    /**
+     * 
+     * @return 
+     * es demana les caselles a descobrir. Torna un Map amb
+       key=posició de la casella a descobrir i value=quantitat de caselles al 
+       seu voltant amb mina.
+
+     */
+    
     @Override
     public Map<Integer, Integer> toUnCovered() {
-        throw new RuntimeException("no implementat!");
+        Map posUncover = null;
+        
+        
+        return posUncover;
     }
 
+    /**
+     * 
+     * @return 
+     * es demana la quantitat de caselles que falten per descobrir (per si es vol 
+        mostrar a la vista).
+     */
+    
     @Override
     public int getRemaining() {
         throw new RuntimeException("no implementat!");
     }
 
+    /**
+     * 
+     * @return 
+     * es demana el total de mines (per si es vol mostrar a la vista)
+     */
+    
     @Override
     public int getTotalMines() {
         throw new RuntimeException("no implementat!");
     }
-
+/**
+ * 
+ * @return 
+ * el presentador consulta si el joc ha finalitzat.
+ */
     @Override
     public boolean isOver() {
         throw new RuntimeException("no implementat!");
