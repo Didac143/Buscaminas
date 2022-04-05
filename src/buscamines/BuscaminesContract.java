@@ -34,8 +34,6 @@ public interface BuscaminesContract {
     //the model contract     
     interface BuscaminesModel extends BuscaminesGame {
 
-        void setPresenter(BuscaminesPresenter p);
-
         boolean addListener(BuscaminesModelListener listener);
 
         boolean removeListener(BuscaminesModelListener listener);
