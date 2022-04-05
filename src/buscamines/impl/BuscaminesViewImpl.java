@@ -4,6 +4,8 @@ import buscamines.BuscaminesContract;
 import buscamines.BuscaminesContract.BuscaminesPresenter;
 import buscamines.BuscaminesContract.BuscaminesView;
 import buscamines.impl.BuscaminesModelImpl.Dificult;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,8 +62,9 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         Scene scene = new Scene(new VBox(), 400, 400);
         scene.setFill(Color.OLDLACE);
         
-        stage.setMaxHeight(1050);
-        stage.setMaxWidth(1000);
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        stage.setMaxHeight((screen.getHeight() * 98) / 100);
+        stage.setMaxWidth((screen.getWidth() * 50) / 100);
 
         MenuBar menuBar = new MenuBar();
 
