@@ -6,10 +6,10 @@ import buscamines.BuscaminesContract.BuscaminesView;
 import buscamines.impl.BuscaminesModelImpl.Dificult;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -23,7 +23,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.RadioMenuItemBuilder;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -56,6 +59,9 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         stage.setTitle("Buscaminas");
         Scene scene = new Scene(new VBox(), 400, 400);
         scene.setFill(Color.OLDLACE);
+        
+        stage.setMaxHeight(1050);
+        stage.setMaxWidth(1000);
 
         MenuBar menuBar = new MenuBar();
 
@@ -72,7 +78,7 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         file.getItems().addAll(FExit);
 
         this.sizeGroup = new ToggleGroup();
-        
+
         RadioMenuItem sDiez = RadioMenuItemBuilder.create().toggleGroup(sizeGroup).selected(true).text("10x10").build();
         RadioMenuItem sQuince = RadioMenuItemBuilder.create().toggleGroup(sizeGroup).text("15x15").build();
         RadioMenuItem sVeinte = RadioMenuItemBuilder.create().toggleGroup(sizeGroup).text("20x20").build();
@@ -86,14 +92,14 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         RadioMenuItem DDificil = RadioMenuItemBuilder.create().toggleGroup(dificultyGroup).text("Dificil").build();
 
         difficulty.getItems().addAll(DFacil, DMedio, DDificil);
-        
+
         EventHandler eventHandler = new EventHandler() {
             @Override
             public void handle(Event event) {
                 initGame();
             }
         };
-        
+
         sDiez.addEventHandler(EventType.ROOT, eventHandler);
         sQuince.addEventHandler(EventType.ROOT, eventHandler);
         sVeinte.addEventHandler(EventType.ROOT, eventHandler);
@@ -112,18 +118,18 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         MenuItem HAutores = new MenuItem("Autores");
 
         help.getItems().addAll(HAutores, HComoJugar);
-        
+
         initGame();
-        
+
         ((VBox) scene.getRoot()).getChildren().addAll(menuBar, gridPane);
         stage.setScene(scene);
         stage.show();
     }
-    
+
     public void initGame() {
-        int size = Integer.valueOf(((RadioMenuItem)sizeGroup.getSelectedToggle()).getText().split("x")[0]);
-        Dificult difficulty = null; 
-        switch (((RadioMenuItem)dificultyGroup.getSelectedToggle()).getText().toLowerCase()) {
+        int size = Integer.valueOf(((RadioMenuItem) sizeGroup.getSelectedToggle()).getText().split("x")[0]);
+        Dificult difficulty = null;
+        switch (((RadioMenuItem) dificultyGroup.getSelectedToggle()).getText().toLowerCase()) {
             case "facil":
                 difficulty = Dificult.EASY;
                 break;
@@ -139,14 +145,31 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         nodes.removeAll(nodes);
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                gridPane.add(new MyButton(i*size+j), j, i);
+                gridPane.add(new MyButton(i * size + j), j, i);
             }
         }
+
+        ColumnConstraints cc = new ColumnConstraints(20, 150, 100);
+        cc.setHgrow(Priority.ALWAYS);
+
+        RowConstraints rc = new RowConstraints(20, 150, 100);
+        rc.setVgrow(Priority.ALWAYS);
+
+        List<ColumnConstraints> columnConstraintses = gridPane.getColumnConstraints();
+        List<RowConstraints> rowConstraintses = gridPane.getRowConstraints();
+
+        columnConstraintses.removeAll(columnConstraintses);
+        rowConstraintses.removeAll(rowConstraintses);
+        for (int i = 0; i < size; i++) {
+            columnConstraintses.add(cc);
+            rowConstraintses.add(rc);
+        }
+
     }
 
     @Override
     public void setPresenter(BuscaminesContract.BuscaminesPresenter p) {
-       this.presentador = p;
+        this.presentador = p;
     }
 
     @Override
@@ -176,7 +199,7 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         public MyButton(int pos) {
             flag = false;
             this.pos = pos;
-            this.setText(String.valueOf(pos));
+            initButton();
         }
 
         public boolean isFlag() {
@@ -185,6 +208,11 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
 
         public void setFlag(boolean flag) {
             this.flag = flag;
+        }
+
+        private void initButton() {
+            this.setMaxWidth(Double.POSITIVE_INFINITY);
+            this.setMaxHeight(Double.POSITIVE_INFINITY);
         }
 
     }
