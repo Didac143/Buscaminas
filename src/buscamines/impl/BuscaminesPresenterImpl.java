@@ -12,7 +12,11 @@ public class BuscaminesPresenterImpl implements BuscaminesPresenter, BuscaminesC
     private BuscaminesModel model;
     private BuscaminesView vista;
 
-
+    public BuscaminesPresenterImpl(BuscaminesModel model) {
+        this.model = model;
+        model.addListener(this);
+    }
+    
     @Override
     public void setModel(BuscaminesContract.BuscaminesModel m) {
         this.model = m;
@@ -27,16 +31,19 @@ public class BuscaminesPresenterImpl implements BuscaminesPresenter, BuscaminesC
     @Override
     public void toUncover(int pos) {
         model.play(pos);
+        System.out.println(model.toUnCovered());
+        vista.UnCovered(model.toUnCovered());
     }
 
 
     @Override
     public Set<Integer> configSizes() {
-         throw new RuntimeException("no implementat!");
+         return model.getSizes();
     }
 
     @Override
     public void toRestart(int size, Dificult d) {
+        System.out.println(size + " - " + d);
          model.start(size, d);
     }
 

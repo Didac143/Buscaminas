@@ -1,6 +1,7 @@
 package buscamines.impl;
 
 import buscamines.BuscaminesContract;
+import buscamines.BuscaminesContract.BuscaminesModel;
 import buscamines.BuscaminesContract.BuscaminesPresenter;
 import buscamines.BuscaminesContract.BuscaminesView;
 import buscamines.impl.BuscaminesModelImpl.Dificult;
@@ -8,10 +9,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -19,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -31,6 +33,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -44,9 +47,10 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
     private ToggleGroup sizeGroup, dificultyGroup;
     private GridPane gridPane;
 
-    public BuscaminesViewImpl(Stage stage) {
+    public BuscaminesViewImpl(Stage stage, BuscaminesPresenter p) {
         gridPane = new GridPane();
         buttons = new ArrayList<>();
+        presentador = p;
         initUI(stage);
     }
 
@@ -167,6 +171,10 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
             columnConstraintses.add(cc);
             rowConstraintses.add(rc);
         }
+        
+        System.out.println(size + " - " + difficulty);
+        
+        presentador.toRestart(size, difficulty);
 
     }
 
@@ -177,7 +185,9 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
 
     @Override
     public void UnCovered(Map<Integer, Integer> boxesDescovered) {
-        throw new RuntimeException("no implementat!");
+        boxesDescovered.forEach((k,v) -> {
+            gridPane.getChildren().set(k, new Text(String.valueOf(v)));
+        });
     }
 
     @Override
@@ -216,9 +226,9 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         private void initButton() {
             this.setMaxWidth(Double.POSITIVE_INFINITY);
             this.setMaxHeight(Double.POSITIVE_INFINITY);
-            this.addEventHandler(EventType.ROOT, new EventHandler() {
+            this.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(Event event) {
+                public void handle(ActionEvent event) {
                     presentador.toUncover(pos);
                 }
             });
