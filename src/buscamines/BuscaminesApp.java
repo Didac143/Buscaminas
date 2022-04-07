@@ -18,15 +18,10 @@ public class BuscaminesApp extends Application {
     @Override
     public void start(Stage stage) {
         BuscaminesModel m = new BuscaminesModelImpl();
-        BuscaminesPresenter p = new BuscaminesPresenterImpl();
-        BuscaminesView v = new BuscaminesViewImpl(stage);
-        
-        p.setModel(m);
+        BuscaminesPresenter p = new BuscaminesPresenterImpl(m);
+        BuscaminesView v = new BuscaminesViewImpl(stage, p);
         p.setView(v);
-        v.setPresenter(p);
     }
-
-   
 
     public static void main(String[] args) {
         launch(args);
