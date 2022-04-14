@@ -1,0 +1,9 @@
+.label{
+    -fx-text-align: center;
+    -fx-vertical-align: central;
+    -fx-font-size: 14px;
+    -fx-color: blueviolet;
+}
+/*.button{
+    -fx-alignment-adjust: middle;
+}*/

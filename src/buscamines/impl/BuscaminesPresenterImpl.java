@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public class BuscaminesPresenterImpl implements BuscaminesPresenter, BuscaminesContract.BuscaminesModelListener {
+
     private BuscaminesModel model;
     private BuscaminesView vista;
 
@@ -16,7 +17,7 @@ public class BuscaminesPresenterImpl implements BuscaminesPresenter, BuscaminesC
         this.model = model;
         model.addListener(this);
     }
-    
+
     @Override
     public void setModel(BuscaminesContract.BuscaminesModel m) {
         this.model = m;
@@ -35,16 +36,15 @@ public class BuscaminesPresenterImpl implements BuscaminesPresenter, BuscaminesC
         vista.UnCovered(model.toUnCovered());
     }
 
-
     @Override
     public Set<Integer> configSizes() {
-         return model.getSizes();
+        return model.getSizes();
     }
 
     @Override
     public void toRestart(int size, Dificult d) {
         System.out.println(size + " - " + d);
-         model.start(size, d);
+        model.start(size, d);
     }
 
     @Override
@@ -55,6 +55,11 @@ public class BuscaminesPresenterImpl implements BuscaminesPresenter, BuscaminesC
     @Override
     public void winEvent() {
         vista.win();
+    }
+
+    @Override
+    public boolean isEnCurso() {
+        return model.isEnCurso();
     }
 
 }

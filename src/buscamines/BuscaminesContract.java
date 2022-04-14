@@ -28,6 +28,8 @@ public interface BuscaminesContract {
         boolean isOver();
 
         void play(int pos);
+        
+        boolean isEnCurso();
 
     }
 
@@ -52,6 +54,8 @@ public interface BuscaminesContract {
         Set<Integer> configSizes();
 
         void toRestart(int size, Dificult d);
+        
+        boolean isEnCurso();
 
     }
 

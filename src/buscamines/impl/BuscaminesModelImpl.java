@@ -21,38 +21,38 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
     private Box[][] grid;
     private List<Integer> posMines = new ArrayList<>();
     private Map<Dificult, Integer> dificultPercents = new HashMap<Dificult, Integer>() {
-            {
-                put(Dificult.EASY, 10);
-                put(Dificult.MEDIUM, 15);
-                put(Dificult.HARD, 20);
-            }
-        };
+        {
+            put(Dificult.EASY, 10);
+            put(Dificult.MEDIUM, 15);
+            put(Dificult.HARD, 20);
+        }
+    };
     private Map<Integer, Integer> posToUncover = new HashMap<>();
     private int remaining;
     private int size;
     private Dificult difficulty;
     private int pos; //position to discover
+    private boolean enCurso;
 
     /**
-     * 
+     *
      * @param size
-     * @param d 
-     * 
+     * @param d
+     *
      * es demana reinicia el joc amb la configuració rebuda
      */
-    
     @Override
     public void start(int size, Dificult d) {
 
-
         this.size = size;
-        this. difficulty = d;
-
+        this.difficulty = d;
 
         System.out.println(size + " - " + d);
         this.size = size;
-        this.difficulty = d; 
+        this.difficulty = d;
         this.grid = new Box[size][size];
+        this.posMines.clear();
+        this.enCurso = false;
         initGrid();
         setMines();
         calcNearbyMines();
@@ -109,14 +109,16 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
 
     }
 
-/**
- * 
- * @param pos 
- * es demana realitzar la jugada de descobrir la casella amb la posició passada per paràmetre.
- */    
-    
+    /**
+     *
+     * @param pos es demana realitzar la jugada de descobrir la casella amb la
+     * posició passada per paràmetre.
+     */
     @Override
     public void play(int pos) {
+        if (!enCurso) {
+            enCurso = true;
+        }
         this.pos = pos;
         this.posToUncover.clear();
         System.out.println(pos + " - " + size);
@@ -128,6 +130,15 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
             listeners.forEach(l -> l.overEvent(posMines));
         }
 
+        if (remaining == 0) {
+            listeners.forEach(l -> l.winEvent());
+        }
+
+    }
+
+    @Override
+    public boolean isEnCurso() {
+        return enCurso;
     }
 
     private void unCoverCells(int y, int x) {
@@ -140,7 +151,7 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
         current.setIsUnCovered(true);
         posToUncover.put(current.getPos(), current.getMinesNeighbours());
         remaining--;
-        
+
         if (current.getMinesNeighbours() > 0) {
             return;
         }
@@ -156,10 +167,6 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
 
     }
 
-
-
-    
-  
     @Override
     public boolean addListener(BuscaminesModelListener listener) {
         System.out.println(listeners);
@@ -172,51 +179,40 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
     }
 
     /**
-     * 
-     * @return 
-     * es demana les caselles a descobrir. Torna un Map amb
-       key=posició de la casella a descobrir i value=quantitat de caselles al 
-       seu voltant amb mina.
-
+     *
+     * @return es demana les caselles a descobrir. Torna un Map amb key=posició
+     * de la casella a descobrir i value=quantitat de caselles al seu voltant
+     * amb mina.
+     *
      */
-    
     @Override
     public Map<Integer, Integer> toUnCovered() {
-
-        Map posUncover = null;
-        
-        
-
         return posToUncover;
     }
 
     /**
-     * 
-     * @return 
-     * es demana la quantitat de caselles que falten per descobrir (per si es vol 
-        mostrar a la vista).
+     *
+     * @return es demana la quantitat de caselles que falten per descobrir (per
+     * si es vol mostrar a la vista).
      */
-    
     @Override
     public int getRemaining() {
         return remaining;
     }
 
     /**
-     * 
-     * @return 
-     * es demana el total de mines (per si es vol mostrar a la vista)
+     *
+     * @return es demana el total de mines (per si es vol mostrar a la vista)
      */
-    
     @Override
     public int getTotalMines() {
         return posMines.size();
     }
-/**
- * 
- * @return 
- * el presentador consulta si el joc ha finalitzat.
- */
+
+    /**
+     *
+     * @return el presentador consulta si el joc ha finalitzat.
+     */
     @Override
     public boolean isOver() {
         return posMines.contains(pos) || remaining == 0;
