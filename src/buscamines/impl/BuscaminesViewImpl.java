@@ -18,9 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.Initializable;
@@ -63,15 +64,24 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
     private ToggleGroup sizeGroup, dificultyGroup;
     private GridPane gridPane;
     private Map<String, AudioClip> sounds;
+    private boolean soundEnabled;
 
-    public BuscaminesViewImpl(Stage stage, BuscaminesPresenter p) throws MalformedURLException, IOException {
+    public BuscaminesViewImpl(Stage stage, BuscaminesPresenter p) {
         gridPane = new GridPane();
         buttons = new ArrayList<>();
         presentador = p;
-        sounds = new HashMap<String, AudioClip>(){
-        {
-put("click",(AudioClip)new File("/buscamines/click.wav").toURL().getContent());
-        }};
+        soundEnabled = true;
+        sounds = new HashMap<String, AudioClip>() {
+            {
+                try {
+                    put("click", (AudioClip) new File("src/buscamines/click.wav").toURL().getContent());
+                    put("win", (AudioClip) new File("src/buscamines/win.wav").toURL().getContent());
+                    put("boom", (AudioClip) new File("src/buscamines/explosionMine.wav").toURL().getContent());
+                } catch (IOException ex) {
+                    Logger.getLogger(BuscaminesViewImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
         initUI(stage);
     }
 
@@ -158,6 +168,16 @@ put("click",(AudioClip)new File("/buscamines/click.wav").toURL().getContent());
 
         RadioMenuItem SSonido = RadioMenuItemBuilder.create().toggleGroup(soundGroup).selected(true).text("On").build();
         RadioMenuItem SOff = RadioMenuItemBuilder.create().toggleGroup(soundGroup).text("Off").build();
+        
+        EventHandler<ActionEvent> eventHandlerSound = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                soundEnabled = ((RadioMenuItem)event.getSource()).getText().equals("On");
+            }
+        };
+        
+        SSonido.setOnAction(eventHandlerSound);
+        SOff.setOnAction(eventHandlerSound);
 
         sound.getItems().addAll(SSonido, SOff);
 
@@ -274,6 +294,7 @@ put("click",(AudioClip)new File("/buscamines/click.wav").toURL().getContent());
 
     @Override
     public void overGame(List<Integer> posMines) {
+        if (soundEnabled) sounds.get("boom").play();
         posMines.forEach(p -> {
             ((MyButton) gridPane.getChildren().get(p)).setGraphic(
                     new ImageView(new Image("/buscamines/mine.png"))
@@ -326,6 +347,7 @@ put("click",(AudioClip)new File("/buscamines/click.wav").toURL().getContent());
 
     @Override
     public void win() {
+        if (soundEnabled) sounds.get("win").play();
         Stage ganar = new Stage();
         ganar.initModality(Modality.APPLICATION_MODAL);
         VBox dialogVbox = new VBox(20);
@@ -465,7 +487,7 @@ put("click",(AudioClip)new File("/buscamines/click.wav").toURL().getContent());
                         case PRIMARY:
                             if (!isFlag()) {
                                 presentador.toUncover(pos);
-                                sounds.get("click").play();
+                                if (soundEnabled) sounds.get("click").play();
                             }
                             break;
                         case SECONDARY:
