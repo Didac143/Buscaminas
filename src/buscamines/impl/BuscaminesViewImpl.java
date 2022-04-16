@@ -168,14 +168,14 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
 
         RadioMenuItem SSonido = RadioMenuItemBuilder.create().toggleGroup(soundGroup).selected(true).text("On").build();
         RadioMenuItem SOff = RadioMenuItemBuilder.create().toggleGroup(soundGroup).text("Off").build();
-        
+
         EventHandler<ActionEvent> eventHandlerSound = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                soundEnabled = ((RadioMenuItem)event.getSource()).getText().equals("On");
+                soundEnabled = ((RadioMenuItem) event.getSource()).getText().equals("On");
             }
         };
-        
+
         SSonido.setOnAction(eventHandlerSound);
         SOff.setOnAction(eventHandlerSound);
 
@@ -294,7 +294,9 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
 
     @Override
     public void overGame(List<Integer> posMines) {
-        if (soundEnabled) sounds.get("boom").play();
+        if (soundEnabled) {
+            sounds.get("boom").play();
+        }
         posMines.forEach(p -> {
             ((MyButton) gridPane.getChildren().get(p)).setGraphic(
                     new ImageView(new Image("/buscamines/mine.png"))
@@ -302,11 +304,14 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         });
         Stage perder = new Stage();
         perder.initModality(Modality.APPLICATION_MODAL);
-        VBox dialogVbox = new VBox(20);
-        AnchorPane anchorPane = new AnchorPane();
+        VBox dialogVbox = new VBox();
 
-        Scene dialogScene = new Scene(dialogVbox, 300, 200);
+        dialogVbox.setSpacing(10);
+        dialogVbox.setPadding(new Insets(20, 65, 20, 65));
+
         Label comoText = new Label("Has perdido\n" + "Total de minas:" + posMines.size());
+        comoText.setAlignment(Pos.CENTER);
+
         perder.getIcons().add(new Image(this.getClass().getResource("/buscamines/mine.png").toString()));
         Button volverJugar = new Button("Volver a jugar");
         volverJugar.setOnAction(new EventHandler<ActionEvent>() {
@@ -323,16 +328,14 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
                 System.exit(0);
             }
         });
-        anchorPane.getChildren().addAll(comoText, volverJugar, exit);
-        anchorPane.setTopAnchor(comoText, 40.0);
-        anchorPane.setTopAnchor(volverJugar, 100.0);
-        anchorPane.setTopAnchor(exit, 150.0);
 
-        anchorPane.setLeftAnchor(comoText, 100.0);
-        anchorPane.setLeftAnchor(volverJugar, 100.0);
-        anchorPane.setLeftAnchor(exit, 120.0);
+        volverJugar.setMaxWidth(Double.MAX_VALUE);
+        exit.setMaxWidth(Double.MAX_VALUE);
 
-        dialogVbox.getChildren().addAll(anchorPane);
+        dialogVbox.getChildren().addAll(comoText, volverJugar, exit);
+
+        Scene dialogScene = new Scene(dialogVbox);
+
         perder.setScene(dialogScene);
         perder.show();
 
@@ -347,15 +350,19 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
 
     @Override
     public void win() {
-        if (soundEnabled) sounds.get("win").play();
+        if (soundEnabled) {
+            sounds.get("win").play();
+        }
         Stage ganar = new Stage();
         ganar.initModality(Modality.APPLICATION_MODAL);
-        VBox dialogVbox = new VBox(20);
-        AnchorPane anchorPane = new AnchorPane();
+        VBox dialogVbox = new VBox();
+        dialogVbox.setSpacing(10);
+        dialogVbox.setPadding(new Insets(20, 65, 20, 65));
         ganar.getIcons().add(new Image(this.getClass().getResource("/buscamines/mine.png").toString()));
+        ganar.setResizable(false);
+        Label comoText = new Label("Has ganado \n Otra partida?");
+        comoText.setAlignment(Pos.CENTER);
 
-        Label comoText = new Label("Has ganado");
-        Label otra = new Label("Otra partida?");
         Button siButt = new Button("Si");
         siButt.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -372,19 +379,11 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
 
             }
         });
-        anchorPane.getChildren().addAll(comoText, otra, siButt, noButt);
-        anchorPane.setTopAnchor(comoText, 40.0);
-        anchorPane.setTopAnchor(otra, 80.0);
-        anchorPane.setTopAnchor(siButt, 120.0);
-        anchorPane.setTopAnchor(noButt, 120.0);
-
-        anchorPane.setLeftAnchor(comoText, 100.0);
-        anchorPane.setLeftAnchor(otra, 100.0);
-        anchorPane.setLeftAnchor(siButt, 100.0);
-        anchorPane.setLeftAnchor(noButt, 140.0);
+        siButt.setMaxWidth(Double.MAX_VALUE);
+        noButt.setMaxWidth(Double.MAX_VALUE);
 
         Scene dialogScene = new Scene(dialogVbox, 300, 200);
-        dialogVbox.getChildren().addAll(anchorPane);
+        dialogVbox.getChildren().addAll(comoText, siButt, noButt);
         ganar.setScene(dialogScene);
         ganar.show();
 
@@ -487,7 +486,9 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
                         case PRIMARY:
                             if (!isFlag()) {
                                 presentador.toUncover(pos);
-                                if (soundEnabled) sounds.get("click").play();
+                                if (soundEnabled) {
+                                    sounds.get("click").play();
+                                }
                             }
                             break;
                         case SECONDARY:
