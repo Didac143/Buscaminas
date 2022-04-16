@@ -187,14 +187,21 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
             public void handle(ActionEvent event) {
                 Stage comoJugar = new Stage();
                 comoJugar.initModality(Modality.APPLICATION_MODAL);
-                comoJugar.initOwner(stage);
-                VBox dialogVbox = new VBox(20);
+                VBox dialogVbox = new VBox();
+
+                dialogVbox.setSpacing(10);
+                dialogVbox.setPadding(new Insets(20, 65, 20, 65));
+
                 Label comoText = new Label("El objetivo es despejar todo el área \nsin detonar las minas.\nAl pulsar sobre las celdas, una zona \nse despeja y aparecen números \nque determinan la proximidad de\nlas minas. Por ejemplo, en las \nceldas contiguas a un [2] sólo habrá \ndos minas. ");
-                dialogVbox.getChildren().add(comoText);
-                comoText.setAlignment(Pos.BASELINE_CENTER);
-                comoText.setPadding(new Insets(30));
+
+                comoText.setAlignment(Pos.CENTER);
+
                 comoJugar.getIcons().add(new Image(this.getClass().getResource("/buscamines/mine.png").toString()));
-                Scene dialogScene = new Scene(dialogVbox, 300, 200);
+
+                dialogVbox.getChildren().addAll(comoText);
+
+                Scene dialogScene = new Scene(dialogVbox);
+
                 comoJugar.setScene(dialogScene);
                 comoJugar.show();
 
@@ -207,15 +214,21 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
             public void handle(ActionEvent event) {
                 Stage autores = new Stage();
                 autores.initModality(Modality.APPLICATION_MODAL);
-                autores.initOwner(stage);
-                VBox dialogVbox = new VBox(20);
+                VBox dialogVbox = new VBox();
+
+                dialogVbox.setSpacing(10);
+                dialogVbox.setPadding(new Insets(20, 65, 20, 65));
+
                 Label comoText = new Label("Didac Ortega y Arantxa Nevado");
-                dialogVbox.getChildren().add(comoText);
-                comoText.setAlignment(Pos.TOP_CENTER);
-                Scene dialogScene = new Scene(dialogVbox, 300, 200);
-                autores.setScene(dialogScene);
+                comoText.setAlignment(Pos.CENTER);
 
                 autores.getIcons().add(new Image(this.getClass().getResource("/buscamines/mine.png").toString()));
+
+                dialogVbox.getChildren().addAll(comoText);
+
+                Scene dialogScene = new Scene(dialogVbox);
+
+                autores.setScene(dialogScene);
                 autores.show();
 
             }
