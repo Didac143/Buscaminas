@@ -62,11 +62,14 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
     private List<MyButton> buttons;
     private BuscaminesPresenter presentador;
     private ToggleGroup sizeGroup, dificultyGroup;
+    private String lastSizeSelected, lastDiffSelected;
     private GridPane gridPane;
     private Map<String, AudioClip> sounds;
     private boolean soundEnabled;
 
     public BuscaminesViewImpl(Stage stage, BuscaminesPresenter p) {
+        lastSizeSelected = "10x10";
+        lastDiffSelected = "facil";
         gridPane = new GridPane();
         buttons = new ArrayList<>();
         presentador = p;
@@ -150,8 +153,9 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
             public void handle(ActionEvent event) {
                 if (presentador.isEnCurso()) {
                     onGameRestart();
-
                 } else {
+                    lastSizeSelected = ((RadioMenuItem) sizeGroup.getSelectedToggle()).getText();
+                    lastDiffSelected = ((RadioMenuItem) dificultyGroup.getSelectedToggle()).getText();
                     initGame();
                 }
             }
@@ -237,6 +241,22 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         help.getItems().addAll(HAutores, HComoJugar);
 
         initGame();
+
+        sizeGroup.getToggles().stream()
+                .filter(t -> ((RadioMenuItem) t).getText()
+                .toLowerCase()
+                .contains(lastSizeSelected))
+                .findFirst()
+                .get()
+                .setSelected(true);
+
+        dificultyGroup.getToggles().stream()
+                .filter(t -> ((RadioMenuItem) t).getText()
+                .toLowerCase()
+                .contains(lastDiffSelected))
+                .findFirst()
+                .get()
+                .setSelected(true);
 
         ((VBox) scene.getRoot()).getChildren().addAll(menuBar, gridPane);
         stage.setScene(scene);
@@ -373,7 +393,7 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         dialogVbox.setPadding(new Insets(20, 65, 20, 65));
         ganar.getIcons().add(new Image(this.getClass().getResource("/buscamines/mine.png").toString()));
         ganar.setResizable(false);
-        Label comoText = new Label("Has ganado \n Otra partida?");
+        Label comoText = new Label("Has ganado\nOtra partida?");
         comoText.setAlignment(Pos.CENTER);
 
         Button siButt = new Button("Si");
@@ -395,7 +415,7 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         siButt.setMaxWidth(Double.MAX_VALUE);
         noButt.setMaxWidth(Double.MAX_VALUE);
 
-        Scene dialogScene = new Scene(dialogVbox, 300, 200);
+        Scene dialogScene = new Scene(dialogVbox);
         dialogVbox.getChildren().addAll(comoText, siButt, noButt);
         ganar.setScene(dialogScene);
         ganar.show();
@@ -426,6 +446,8 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         siButt.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                lastSizeSelected = ((RadioMenuItem) sizeGroup.getSelectedToggle()).getText();
+                lastDiffSelected = ((RadioMenuItem) dificultyGroup.getSelectedToggle()).getText();
                 initGame();
                 reiniciar.close();
             }
@@ -434,7 +456,21 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         noButt.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                sizeGroup.getToggles().stream()
+                        .filter(t -> ((RadioMenuItem) t).getText()
+                        .toLowerCase()
+                        .contains(lastSizeSelected))
+                        .findFirst()
+                        .get()
+                        .setSelected(true);
 
+                dificultyGroup.getToggles().stream()
+                        .filter(t -> ((RadioMenuItem) t).getText()
+                        .toLowerCase()
+                        .contains(lastDiffSelected))
+                        .findFirst()
+                        .get()
+                        .setSelected(true);
                 reiniciar.close();
 
             }
