@@ -154,8 +154,8 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
                 if (presentador.isEnCurso()) {
                     onGameRestart();
                 } else {
-                    lastSizeSelected = ((RadioMenuItem) sizeGroup.getSelectedToggle()).getText();
-                    lastDiffSelected = ((RadioMenuItem) dificultyGroup.getSelectedToggle()).getText();
+                    lastSizeSelected = ((RadioMenuItem) sizeGroup.getSelectedToggle()).getText().toLowerCase();
+                    lastDiffSelected = ((RadioMenuItem) dificultyGroup.getSelectedToggle()).getText().toLowerCase();
                     initGame();
                 }
             }
@@ -302,8 +302,8 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
             rowConstraintses.add(rc);
         }
 
-        System.out.println(size + " - " + difficulty);
 
+        
         presentador.toRestart(size, difficulty);
 
     }
@@ -446,8 +446,8 @@ public class BuscaminesViewImpl implements Initializable, BuscaminesView {
         siButt.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                lastSizeSelected = ((RadioMenuItem) sizeGroup.getSelectedToggle()).getText();
-                lastDiffSelected = ((RadioMenuItem) dificultyGroup.getSelectedToggle()).getText();
+                lastSizeSelected = ((RadioMenuItem) sizeGroup.getSelectedToggle()).getText().toLowerCase();
+                lastDiffSelected = ((RadioMenuItem) dificultyGroup.getSelectedToggle()).getText().toLowerCase();
                 initGame();
                 reiniciar.close();
             }

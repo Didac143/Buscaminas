@@ -47,7 +47,6 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
         this.size = size;
         this.difficulty = d;
 
-        System.out.println(size + " - " + d);
         this.size = size;
         this.difficulty = d;
         this.grid = new Box[size][size];
@@ -121,8 +120,6 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
         }
         this.pos = pos;
         this.posToUncover.clear();
-        System.out.println(pos + " - " + size);
-        System.out.println(String.format("[%d][%d] -> %d ", getRow(), getCol(), pos));
         if (!grid[getCol()][getRow()].getIsMine()) {
             unCoverCells(getCol(), getRow());
 
@@ -169,7 +166,6 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
 
     @Override
     public boolean addListener(BuscaminesModelListener listener) {
-        System.out.println(listeners);
         return listeners.add(listener);
     }
 
@@ -224,7 +220,6 @@ public class BuscaminesModelImpl implements BuscaminesContract.BuscaminesModel {
     }
 
     private int getRow() {
-        System.out.println(pos + " - " + size);
         return pos / size;
     }
 
